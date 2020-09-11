@@ -1,5 +1,8 @@
 package test;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 public class Marathon {
 /*
 문제 설명
@@ -13,21 +16,48 @@ completion의 길이는 participant의 길이보다 1 작습니다.
 참가자의 이름은 1개 이상 20개 이하의 알파벳 소문자로 이루어져 있습니다.
 참가자 중에는 동명이인이 있을 수 있습니다.
  */
+//	public String solution(String[] participant, String[] completion) {
+//        String answer = "";
+//        for(int i = 0; i < participant.length; i++){
+//            for(int j = 0; j < completion.length; j++){
+//                answer = participant[i];
+//                if(participant[i].equals(completion[j])){
+//                    answer = "";
+//                    completion[j] = "";
+//                    break;
+//                }
+//            }
+//            if(!answer.equals("")) break;
+//        }
+//        return answer;
+//    }
 	public String solution(String[] participant, String[] completion) {
-        String answer = "";
-        for(int i = 0; i < participant.length; i++){
-            for(int j = 0; j < completion.length; j++){
-                answer = participant[i];
-                if(participant[i].equals(completion[j])){
-                    answer = "";
-                    completion[j] = "";
-                    break;
-                }
-            }
-            if(!answer.equals("")) break;
-        }
-        return answer;
-    }
+		String answer = "";
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		for(int i = 0; i < participant.length; i++) {
+			int count = 0;
+			if(map.containsKey(participant[i]))
+				count = map.get(participant[i]);
+			if(count > 0) {
+				map.put(participant[i], count + 1);
+			} else
+				map.put(participant[i], 1);
+		}
+		for(int i = 0; i < completion.length; i++) {
+			int count = map.get(completion[i]);
+			if(count == 1)
+				map.remove(completion[i]);
+			else if(count > 1)
+				map.put(completion[i], count-1);
+		}
+		
+		Iterator<String> it = map.keySet().iterator();
+		while(it.hasNext()) {
+			answer = it.next();
+		}
+		
+		return answer;
+	}
 	
 	public static void main(String[] args) {
 		
